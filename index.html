@@ -43,30 +43,100 @@ form{
 }
 
 .logo{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:10px;
+}
+
+.logo img{
+
+    width:72px;
+    height:72px;
+    border-radius:18px;
+
+}
+
+.logo h1{
+
     font-size:42px;
     font-weight:700;
     letter-spacing:-1px;
-    opacity:.95;
+
+}
+
+.logo span{
+
+    display:block;
+    color:#8f8f8f;
+    font-size:17px;
+    margin-top:5px;
 }
 
 .search-box{
-    width:min(620px,90vw);
-    min-width:350px;
-    max-width:1100px;
+
+    width:680px;
+    max-width:90vw;
+
+    transition:
+        width .35s cubic-bezier(.22,1,.36,1),
+        transform .3s;
+
+}
+
+textarea{
+
+    width:100%;
+
+    min-height:64px;
+    max-height:220px;
+
+    resize:none;
+    overflow:hidden;
+
+    border:none;
+    outline:none;
+
+    padding:18px 24px;
+
+    border-radius:32px;
+
+    font-size:18px;
+    line-height:28px;
+
+    text-align:center;
+
+    color:white;
+
+    background:rgba(255,255,255,.06);
+
+    backdrop-filter:blur(28px);
+    -webkit-backdrop-filter:blur(28px);
+
+    border:1px solid rgba(255,255,255,.08);
+
     transition:.25s;
+
+}
+
+textarea:focus{
+
+    background:rgba(255,255,255,.08);
+
+    border-color:rgba(255,255,255,.15);
+
+    box-shadow:
+
+        0 0 0 1px rgba(255,255,255,.05),
+
+        0 15px 60px rgba(255,255,255,.05);
+
 }
 
 input{
     width:100%;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.08);
-    backdrop-filter:blur(20px);
-    color:white;
+    text-align:center;
     font-size:18px;
-    padding:18px 24px;
-    border-radius:999px;
-    outline:none;
-    transition:.25s;
 }
 
 input:focus{
@@ -101,16 +171,25 @@ button:hover{
 <form id="searchForm">
 
 <div class="logo">
-Search
+
+    <img src="logo.png" alt="Logo">
+
+    <div>
+
+        <h1>BlackSoul Search</h1>
+
+        <span>Поиск без лишнего</span>
+
+    </div>
+
 </div>
 
 <div class="search-box" id="box">
-<input
-id="search"
-autocomplete="off"
-placeholder="Введите запрос..."
->
-
+    <textarea
+        id="search"
+        rows="1"
+        placeholder="Введите запрос..."
+    ></textarea>
 </div>
 
 <button>Поиск</button>
@@ -121,17 +200,20 @@ placeholder="Введите запрос..."
 
 <script>
 // ===== GOOGLE SEARCH =====
+const textarea = document.getElementById("search");
+const box = document.getElementById("box");
 
-const input=document.getElementById("search");
-const box=document.getElementById("box");
+textarea.addEventListener("input", ()=>{
 
-input.addEventListener("input",()=>{
+    textarea.style.height="auto";
+    textarea.style.height=textarea.scrollHeight+"px";
 
-let w=620+input.value.length*6;
+    let w=680+textarea.value.length*4;
 
-if(w>1100)w=1100;
+    if(w>1150)
+        w=1150;
 
-box.style.width=w+"px";
+    box.style.width=w+"px";
 
 });
 
