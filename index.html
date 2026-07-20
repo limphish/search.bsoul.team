@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#000;
+    color:#fff;
+    font-family:Inter,sans-serif;
+    overflow:hidden;
+}
+
+canvas{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+}
+
+.container{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+}
+
+.logo{
+    font-size:42px;
+    font-weight:700;
+    letter-spacing:-1px;
+    opacity:.95;
+}
+
+.search-box{
+    width:min(620px,90vw);
+    min-width:350px;
+    max-width:1100px;
+    transition:.25s;
+}
+
+input{
+    width:100%;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(20px);
+    color:white;
+    font-size:18px;
+    padding:18px 24px;
+    border-radius:999px;
+    outline:none;
+    transition:.25s;
+}
+
+input:focus{
+    border-color:rgba(255,255,255,.2);
+    background:rgba(255,255,255,.08);
+}
+
+button{
+    background:white;
+    color:black;
+    border:none;
+    border-radius:999px;
+    padding:14px 38px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="container">
+
+<form id="searchForm">
+
+<div class="logo">
+Search
+</div>
+
+<div class="search-box" id="box">
+<input
+id="search"
+autocomplete="off"
+placeholder="Введите запрос..."
+>
+
+</div>
+
+<button>Поиск</button>
+
+</form>
+
+</div>
+
+<script>
+// ===== GOOGLE SEARCH =====
+
+const input=document.getElementById("search");
+const box=document.getElementById("box");
+
+input.addEventListener("input",()=>{
+
+let w=620+input.value.length*6;
+
+if(w>1100)w=1100;
+
+box.style.width=w+"px";
+
+});
+
+document.getElementById("searchForm").onsubmit=e=>{
+
+e.preventDefault();
+
+const q=input.value.trim();
+
+if(!q)return;
+
+window.location.href=
+"https://www.google.com/search?q="+encodeURIComponent(q);
+
+};
+
+// ===== STARS =====
+
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
+
+let stars=[];
+
+function resize(){
+
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+}
+
+resize();
+
+window.onresize=resize;
+
+for(let i=0;i<120;i++){
+
+stars.push({
+
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*2+0.4,
+speed:Math.random()*0.7+0.25
+
+});
+
+}
+
+function animate(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+for(const s of stars){
+
+s.y+=s.speed;
+
+if(s.y>canvas.height){
+
+s.y=-5;
+s.x=Math.random()*canvas.width;
+
+}
+
+ctx.beginPath();
+ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+ctx.fillStyle="white";
+ctx.fill();
+
+}
+
+requestAnimationFrame(animate);
+
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
